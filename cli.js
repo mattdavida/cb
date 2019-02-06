@@ -15,6 +15,7 @@ const commands = {
   i: program.install,
   lint: program.runLint,
   l: program.runLint,
+  rimraf: program.rimraf,
   test: program.runTest,
   t: program.runTest,
   "test-debug": program.runTestDebug,

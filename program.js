@@ -7,6 +7,7 @@ module.exports = {
   helpMessage,
   install,
   open,
+  rimraf,
   runAotDebug,
   runDevServer,
   runLint,
@@ -20,15 +21,16 @@ function helpMessage() {
   console.log(`
 CareBook - to get started:
 
-    [install]    || [i] : npm install in project dir
-    [dev]        || [d] : npm run dev-server in project dir
-    [watch]      || [w] : npm run watch in project dir
-    [aot]        || [a] : npm run aot-debug in project dir
-    [test]       || [t] : npm run test in project dir
-    [test-debug] || [td]: npm run test-debug in project dir
-    [build:prod] || [bp]: npm run build:prod in project dir
-    [build]      || [bp]: npm run build in project dir
-    [lint]       ||  [l]: npm run lint in project dir
+    [install]    || [i] : yarn install in project dir
+    [dev]        || [d] : yarn run dev-server in project dir
+    [watch]      || [w] : yarn run watch in project dir
+    [aot]        || [a] : yarn run aot-debug in project dir
+    [test]       || [t] : yarn run test in project dir
+    [test-debug] || [td]: yarn run test-debug in project dir
+    [build:prod] || [bp]: yarn run build:prod in project dir
+    [build]      || [bp]: yarn run build in project dir
+    [lint]       ||  [l]: yarn run lint in project dir
+    [rimraf]            : rimraf node_modules
     [.]                 : opens project in vs-code
     [help]              : help
 `);
@@ -44,11 +46,11 @@ function install() {
   try {
     var dir = exec("dir", (err, stdout) => {
       console.log(` stdout: ${stdout}`);
-      console.log(" Runnging npm install...");
-      var install = spawn.sync("npm", ["install"], { stdio: "inherit" });
+      console.log(" Running yarn install...");
+      var install = spawn.sync("yarn", ["install"], { stdio: "inherit" });
     });
   } catch (err) {
-    console.error(`npm install error: ${err}`);
+    console.error(`yarn install error: ${err}`);
   }
 }
 
@@ -77,7 +79,21 @@ function runDevServer() {
     console.error(`chdir: ${err}`);
   }
   try {
-    var run = spawn.sync("npm", ["run", "dev-server"], { stdio: "inherit" });
+    var run = spawn.sync("yarn", ["run", "dev-server"], { stdio: "inherit" });
+  } catch (err) {
+    console.error(`error in vs-code: ${err}`);
+  }
+}
+
+function rimraf() {
+  try {
+    _changeDirectory();
+    console.log(` New directory: ${process.cwd()}`);
+  } catch (err) {
+    console.error(`chdir: ${err}`);
+  }
+  try {
+    var run = spawn.sync("rimraf", ["node_modules"], { stdio: "inherit" });
   } catch (err) {
     console.error(`error in vs-code: ${err}`);
   }
@@ -91,7 +107,7 @@ function runLint() {
     console.error(`chdir: ${err}`);
   }
   try {
-    var run = spawn.sync("npm", ["run", "lint"], { stdio: "inherit" });
+    var run = spawn.sync("yarn", ["run", "lint"], { stdio: "inherit" });
   } catch (err) {
     console.error(`error in vs-code: ${err}`);
   }
@@ -105,7 +121,7 @@ function runBuild() {
     console.error(`chdir: ${err}`);
   }
   try {
-    var run = spawn.sync("npm", ["run", "build"], { stdio: "inherit" });
+    var run = spawn.sync("yarn", ["run", "build"], { stdio: "inherit" });
   } catch (err) {
     console.error(`error in vs-code: ${err}`);
   }
@@ -119,7 +135,7 @@ function buildProd() {
     console.error(`chdir: ${err}`);
   }
   try {
-    var run = spawn.sync("npm", ["run", "build:prod"], { stdio: "inherit" });
+    var run = spawn.sync("yarn", ["run", "build:prod"], { stdio: "inherit" });
   } catch (err) {
     console.error(`error in vs-code: ${err}`);
   }
@@ -133,7 +149,7 @@ function runWatch() {
     console.error(`chdir: ${err}`);
   }
   try {
-    var run = spawn.sync("npm", ["run", "watch"], { stdio: "inherit" });
+    var run = spawn.sync("yarn", ["run", "watch"], { stdio: "inherit" });
   } catch (err) {
     console.error(`error in vs-code: ${err}`);
   }
@@ -147,7 +163,7 @@ function runTest() {
     console.error(`chdir: ${err}`);
   }
   try {
-    var run = spawn.sync("npm", ["test"], { stdio: "inherit" });
+    var run = spawn.sync("yarn", ["test"], { stdio: "inherit" });
   } catch (err) {
     console.error(`error running tests: ${err}`);
   }
@@ -161,7 +177,7 @@ function runTestDebug() {
     console.error(`chdir: ${err}`);
   }
   try {
-    var run = spawn.sync("npm", ["run", "test_debugging"], {
+    var run = spawn.sync("yarn", ["run", "test_debugging"], {
       stdio: "inherit"
     });
   } catch (err) {
@@ -177,7 +193,7 @@ function runAotDebug() {
     console.error(`chdir: ${err}`);
   }
   try {
-    var run = spawn.sync("npm", ["run", "aot-debug"], { stdio: "inherit" });
+    var run = spawn.sync("yarn", ["run", "aot-debug"], { stdio: "inherit" });
   } catch (err) {
     console.error(`error running tests: ${err}`);
   }
@@ -185,6 +201,6 @@ function runAotDebug() {
 
 function _changeDirectory() {
   return process.chdir(
-    String.raw`C:\Users\matthew.arvidson\source\workspaces\workspace\carebook\dev\datalink.carebook.web`
+    String.raw`C:\projects\carebook\dev\datalink.carebook.web`
   );
 }
